@@ -1,0 +1,7 @@
+{
+    "require-dev": {
+        "symfony/browser-kit": "^3.4",
+        "symfony/css-selector": "^3.4",
+        "symfony/phpunit-bridge": "^5.1"
+    }
+}
