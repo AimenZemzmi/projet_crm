@@ -5,73 +5,48 @@ namespace App\Tests\Unit;
 use App\Entity\User;
 use PHPUnit\Framework\TestCase;
 
-class UserTest extends TestCase
-{
-    private User $user;
+class UserTest extends TestCase {
 
-    protected function setUp(): void
-    {
-        parent::setUp();
-        $this->user = new User();
+    public function testUser(){
+        $user = new User();
+        $user->setFirstName('Aimen');
+        $user->setLastName('Zemzmi');
+        $user->setEmail('aimen.zemzmi@gmail.com');
+        $user->setPassword("aimen");
+        $user->setTag("testPourTag");
+        $user->setPhoneNumber("06.06.06.06.06");
+        $this->assertNotEmpty($user->getFirstName());
+        $this->assertNotEmpty($user->getLastName());
+        $this->assertNotEmpty($user->getPassword());
+        $this->assertNotEmpty($user->getTag());
+        $this->assertEquals('Aimen',$user->getFirstName());
+        $this->assertEquals('Zemzmi',$user->getLastName());
+        $this->assertEquals('aimen.zemzmi@gmail.com',$user->getEmail());
+        $this->assertEquals('aimen',$user->getPassword());
+        $this->assertEquals('testPourTag',$user->getTag());
+        $this->assertEquals("06.06.06.06.06",$user->GetPhoneNumber());
+        $this->assertRegExp('/^\w+([.-]?\w+)*@\w+([.-]?\w+)*(\.\w{2,3})+$/',$user->getEmail());
+        $this->assertEquals(true,$this->isValid($user));
     }
 
-    public function testGetFirstName(): void
-    {
-        $value = 'firstName';
-
-        $response = $this->user->setFirstName($value);
-
-        self::assertInstanceOf(User::class, $response);
-        self::assertEquals($value, $this->user->getFirstName());
-    }
-
-    public function testGetLastName(): void
-    {
-        $value = 'lastName';
-
-        $response = $this->user->setLastName($value);
-
-        self::assertInstanceOf(User::class, $response);
-        self::assertEquals($value, $this->user->getLastName());
-    }
-
-    public function testGetEmail(): void
-    {
-        $value = 'test@gmail.com';
-
-        $response = $this->user->setEmail($value);
-
-        self::assertInstanceOf(User::class, $response);
-        self::assertEquals($value, $this->user->getEmail());
-    }
-
-    public function testGetPassword(): void
-    {
-        $value = 'password';
-
-        $response = $this->user->setPassword($value);
-
-        self::assertInstanceOf(User::class, $response);
-        self::assertEquals($value, $this->user->getPassword());
-    }
-
-    public function testGetTag(): void
-    {
-        $value = 'tag';
-
-        $response = $this->user->setTag($value);
-
-        self::assertInstanceOf(User::class, $response);
-        self::assertEquals($value, $this->user->getTag());
-    }
-
-    public function testGetPhoneNumber(): void
-    {
-        $value = 0606060606;
-
-        $response = $this->user->setPhoneNumber($value);
-
-        self::assertInstanceOf(User::class, $response);
-        self::assertEquals($value, $this->user->getPhoneNumber());
-    }
+    public function isValid(User $user){
+        if(count_chars($user->getPassword()) < 0 || empty($user->getPassword())){
+            return "error Password";
+        }
+        if(count_chars($user->getTag()) < 0 || empty($user->getTag())){
+            return "error Tag";
+        }
+        if(count_chars($user->getLastName()) < 0 || empty($user->getLastName())){
+          return "error lastName";
+        }
+        if(count_chars($user->getFirstName()) < 0 || empty($user->getFirstName())){
+            return "error firstName";
+        }
+        if(!filter_var($user->getEmail(),FILTER_VALIDATE_EMAIL) || empty($user->getEmail())){
+          {
+            return "error Email";
+          }
+        }
+        return true;
+      }
 }
